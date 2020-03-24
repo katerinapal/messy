@@ -1,19 +1,18 @@
-/*global describe, it*/
-var expect = require('unexpected'),
-    HttpExchange = require('../lib/HttpExchange'),
-    HttpRequest = require('../lib/HttpRequest'),
-    HttpResponse = require('../lib/HttpResponse');
+import expect from "unexpected";
+import { HttpExchange as libHttpExchange_HttpExchangejs } from "../lib/HttpExchange";
+import { HttpRequest as libHttpRequest_HttpRequestjs } from "../lib/HttpRequest";
+import { HttpResponse as libHttpResponse_HttpResponsejs } from "../lib/HttpResponse";
 
 describe('HttpExchange', function () {
     it('should accept an object containing an HttpRequest and an HttpResponse instance', function () {
-        var httpExchange = new HttpExchange({
-            request: new HttpRequest('GET / HTTP/1.1\nFoo: Bar\n\nblah'),
-            response: new HttpResponse('HTTP/1.1 200 OK\nQuux: Baz\n\nblaf')
+        var httpExchange = new libHttpExchange_HttpExchangejs({
+            request: new libHttpRequest_HttpRequestjs('GET / HTTP/1.1\nFoo: Bar\n\nblah'),
+            response: new libHttpResponse_HttpResponsejs('HTTP/1.1 200 OK\nQuux: Baz\n\nblaf')
         });
 
         expect(httpExchange, 'to have properties', ['request', 'response']);
-        expect(httpExchange.request, 'to be an', HttpRequest);
-        expect(httpExchange.response, 'to be an', HttpResponse);
+        expect(httpExchange.request, 'to be an', libHttpRequest_HttpRequestjs);
+        expect(httpExchange.response, 'to be an', libHttpResponse_HttpResponsejs);
         expect(
             httpExchange.toString(),
             'to equal',
@@ -22,13 +21,13 @@ describe('HttpExchange', function () {
     });
 
     it('should accept an object containing request and response as strings', function () {
-        var httpExchange = new HttpExchange({
+        var httpExchange = new libHttpExchange_HttpExchangejs({
             request: 'GET / HTTP/1.1\nFoo: Bar\n\nblah',
             response: 'HTTP/1.1 200 OK\nQuux: Baz\n\nblaf'
         });
         expect(httpExchange, 'to have properties', ['request', 'response']);
-        expect(httpExchange.request, 'to be an', HttpRequest);
-        expect(httpExchange.response, 'to be an', HttpResponse);
+        expect(httpExchange.request, 'to be an', libHttpRequest_HttpRequestjs);
+        expect(httpExchange.response, 'to be an', libHttpResponse_HttpResponsejs);
         expect(
             httpExchange.toString(),
             'to equal',
@@ -37,7 +36,7 @@ describe('HttpExchange', function () {
     });
 
     it('should accept an object containing HttpRequest and HttpResponse options objects', function () {
-        var httpExchange = new HttpExchange({
+        var httpExchange = new libHttpExchange_HttpExchangejs({
             request: {
                 requestLine: {
                     method: 'GET',
@@ -56,8 +55,8 @@ describe('HttpExchange', function () {
             }
         });
         expect(httpExchange, 'to have properties', ['request', 'response']);
-        expect(httpExchange.request, 'to be an', HttpRequest);
-        expect(httpExchange.response, 'to be an', HttpResponse);
+        expect(httpExchange.request, 'to be an', libHttpRequest_HttpRequestjs);
+        expect(httpExchange.response, 'to be an', libHttpResponse_HttpResponsejs);
         expect(
             httpExchange.toString(),
             'to equal',
@@ -66,7 +65,7 @@ describe('HttpExchange', function () {
     });
 
     it('should consider identical instances equal', function () {
-        var httpExchange1 = new HttpExchange({
+        var httpExchange1 = new libHttpExchange_HttpExchangejs({
                 request: 'GET /foo HTTP/1.1\r\nHost: foo.com\r\n\r\nblah',
                 response: {
                     statusLine: {
@@ -77,7 +76,7 @@ describe('HttpExchange', function () {
                     body: 'blaf'
                 }
             }),
-            httpExchange2 = new HttpExchange({
+            httpExchange2 = new libHttpExchange_HttpExchangejs({
                 request: {
                     method: 'GET',
                     url: '/foo',
@@ -94,7 +93,7 @@ describe('HttpExchange', function () {
     });
 
     it('should consider different instances unequal', function () {
-        var httpExchange1 = new HttpExchange({
+        var httpExchange1 = new libHttpExchange_HttpExchangejs({
                 request: 'GET /foo HTTP/1.0\r\nHost: foo.com\r\n\r\nblah',
                 response: {
                     statusLine: {
@@ -105,7 +104,7 @@ describe('HttpExchange', function () {
                     body: 'blaf'
                 }
             }),
-            httpExchange2 = new HttpExchange({
+            httpExchange2 = new libHttpExchange_HttpExchangejs({
                 request: {
                     method: 'GET',
                     url: '/foo',
@@ -119,9 +118,9 @@ describe('HttpExchange', function () {
 
     describe('#toJSON', function () {
         it('should return an object with the request and response JSONified', function () {
-            expect(new HttpExchange({
-                request: new HttpRequest('GET / HTTP/1.1\nFoo: Bar\n\nblah'),
-                response: new HttpResponse('HTTP/1.1 200 OK\nQuux: Baz\n\nblaf')
+            expect(new libHttpExchange_HttpExchangejs({
+                request: new libHttpRequest_HttpRequestjs('GET / HTTP/1.1\nFoo: Bar\n\nblah'),
+                response: new libHttpResponse_HttpResponsejs('HTTP/1.1 200 OK\nQuux: Baz\n\nblaf')
             }).toJSON(), 'to equal', {
                 request: {
                     method: 'GET',
@@ -149,8 +148,8 @@ describe('HttpExchange', function () {
         // Makes it possible to use statusLine.toJSON() as the RHS of a 'to satisfy' assertion in Unexpected
         // where undefined means that the property must not be present:
         it('should not include the keys that have undefined values', function () {
-            var httpExchange = new HttpExchange({
-                request: new HttpRequest('GET / HTTP/1.1\nFoo: Bar\n\nblah'),
+            var httpExchange = new libHttpExchange_HttpExchangejs({
+                request: new libHttpRequest_HttpRequestjs('GET / HTTP/1.1\nFoo: Bar\n\nblah'),
                 response: undefined
             });
 
