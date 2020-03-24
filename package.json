@@ -1,41 +1,77 @@
 {
-  "name": "messy",
-  "version": "6.11.0",
-  "description": "Object model for HTTP and RFC822 messages",
-  "main": "lib/index.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "lint": "jshint .",
-    "test": "mocha && npm run lint",
-    "travis": "npm test && npm run coverage && (<coverage/lcov.info coveralls || true)",
-    "coverage": "NODE_ENV=development istanbul cover _mocha -- --reporter dot && echo google-chrome coverage/lcov-report/index.html"
-  },
-  "keywords": [
-    "http",
-    "request",
-    "response",
-    "email",
-    "message",
-    "rfc822",
-    "rfc2822"
-  ],
-  "author": "Andreas Lind <andreas@one.com>",
-  "repository": "git://github.com/papandreou/messy.git",
-  "license": "BSD",
-  "devDependencies": {
-    "coveralls": "2.11.2",
-    "istanbul": "0.3.15",
-    "jshint": "2.8.0",
-    "mocha": "2.2.5",
-    "unexpected": "8.0.1"
-  },
-  "dependencies": {
-    "iconv-lite": "^0.4.13",
-    "quoted-printable": "1.0.0",
-    "rfc2047": "2.0.0",
-    "rfc2231": "1.3.0",
-    "underscore": "^1.6.0"
-  }
+    "name": "messy",
+    "version": "6.11.0",
+    "description": "Object model for HTTP and RFC822 messages",
+    "main": "lib/index.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "lint": "jshint .",
+        "test": "mocha && npm run lint",
+        "travis": "npm test && npm run coverage && (<coverage/lcov.info coveralls || true)",
+        "coverage": "NODE_ENV=development istanbul cover _mocha -- --reporter dot && echo google-chrome coverage/lcov-report/index.html",
+        "compile-libheaderNameSpecialCasesjs": "babel lib\\headerNameSpecialCases.js -o lib\\headerNameSpecialCases.js --require babel-polyfill --presets env",
+        "compile-libHttpRequestjs": "babel lib\\HttpRequest.js -o lib\\HttpRequest.js --require babel-polyfill --presets env",
+        "compile-libRequestLinejs": "babel lib\\RequestLine.js -o lib\\RequestLine.js --require babel-polyfill --presets env",
+        "compile-testStatusLinejs": "babel test\\StatusLine.js -o test\\StatusLine.js --require babel-polyfill --presets env",
+        "compile-libHttpExchangejs": "babel lib\\HttpExchange.js -o lib\\HttpExchange.js --require babel-polyfill --presets env",
+        "compile-libHttpResponsejs": "babel lib\\HttpResponse.js -o lib\\HttpResponse.js --require babel-polyfill --presets env",
+        "compile-testHttpRequestjs": "babel test\\HttpRequest.js -o test\\HttpRequest.js --require babel-polyfill --presets env",
+        "compile-testRequestLinejs": "babel test\\RequestLine.js -o test\\RequestLine.js --require babel-polyfill --presets env",
+        "compile-testHttpExchangejs": "babel test\\HttpExchange.js -o test\\HttpExchange.js --require babel-polyfill --presets env",
+        "compile-testHttpResponsejs": "babel test\\HttpResponse.js -o test\\HttpResponse.js --require babel-polyfill --presets env",
+        "compile-libfoldHeaderLinejs": "babel lib\\foldHeaderLine.js -o lib\\foldHeaderLine.js --require babel-polyfill --presets env",
+        "compile-libMailjs": "babel lib\\Mail.js -o lib\\Mail.js --require babel-polyfill --presets env",
+        "compile-libformatHeaderNamejs": "babel lib\\formatHeaderName.js -o lib\\formatHeaderName.js --require babel-polyfill --presets env",
+        "compile-libHttpConversationjs": "babel lib\\HttpConversation.js -o lib\\HttpConversation.js --require babel-polyfill --presets env",
+        "compile-libindexjs": "babel lib\\index.js -o lib\\index.js --require babel-polyfill --presets env",
+        "compile-testMailjs": "babel test\\Mail.js -o test\\Mail.js --require babel-polyfill --presets env",
+        "compile-testHttpConversationjs": "babel test\\HttpConversation.js -o test\\HttpConversation.js --require babel-polyfill --presets env",
+        "compile-libdecodeChunkedTransferEncodingjs": "babel lib\\decodeChunkedTransferEncoding.js -o lib\\decodeChunkedTransferEncoding.js --require babel-polyfill --presets env",
+        "compile-libHeadersjs": "babel lib\\Headers.js -o lib\\Headers.js --require babel-polyfill --presets env",
+        "compile-libHeadersWithRfc2047js": "babel lib\\HeadersWithRfc2047.js -o lib\\HeadersWithRfc2047.js --require babel-polyfill --presets env",
+        "compile-libMessagejs": "babel lib\\Message.js -o lib\\Message.js --require babel-polyfill --presets env",
+        "compile-libisRegExpjs": "babel lib\\isRegExp.js -o lib\\isRegExp.js --require babel-polyfill --presets env",
+        "compile-testHeadersjs": "babel test\\Headers.js -o test\\Headers.js --require babel-polyfill --presets env",
+        "compile-testMessagejs": "babel test\\Message.js -o test\\Message.js --require babel-polyfill --presets env",
+        "compile-libStatusLinejs": "babel lib\\StatusLine.js -o lib\\StatusLine.js --require babel-polyfill --presets env",
+        "compile-1_script": "npm run compile-libheaderNameSpecialCasesjs && npm run compile-libHttpRequestjs && npm run compile-libRequestLinejs && npm run compile-testStatusLinejs && npm run compile-libHttpExchangejs && npm run compile-libHttpResponsejs && npm run compile-testHttpRequestjs && npm run compile-testRequestLinejs && npm run compile-testHttpExchangejs && npm run compile-testHttpResponsejs && npm run compile-libfoldHeaderLinejs && npm run compile-libMailjs && npm run compile-libformatHeaderNamejs && npm run compile-libHttpConversationjs && npm run compile-libindexjs && npm run compile-testMailjs && npm run compile-testHttpConversationjs && npm run compile-libdecodeChunkedTransferEncodingjs && npm run compile-libHeadersjs && npm run compile-libHeadersWithRfc2047js",
+        "compile-2_script": "npm run compile-libMessagejs && npm run compile-libisRegExpjs && npm run compile-testHeadersjs && npm run compile-testMessagejs && npm run compile-libStatusLinejs",
+        "compile": "npm run compile-1_script && npm run compile-2_script"
+    },
+    "keywords": [
+        "http",
+        "request",
+        "response",
+        "email",
+        "message",
+        "rfc822",
+        "rfc2822"
+    ],
+    "author": "Andreas Lind <andreas@one.com>",
+    "repository": "git://github.com/papandreou/messy.git",
+    "license": "BSD",
+    "devDependencies": {
+        "coveralls": "2.11.2",
+        "istanbul": "0.3.15",
+        "jshint": "2.8.0",
+        "mocha": "2.2.5",
+        "unexpected": "8.0.1",
+        "babel-cli": "latest",
+        "babel-core": "latest",
+        "babel-plugin-add-module-exports": "latest",
+        "babel-plugin-transform-es2015-modules-commonjs": "latest",
+        "babel-polyfill": "latest",
+        "babel-plugin-transform-object-rest-spread": "latest",
+        "babel-preset-env": "latest",
+        "babel-preset-es2015-without-strict": "latest"
+    },
+    "dependencies": {
+        "iconv-lite": "^0.4.13",
+        "quoted-printable": "1.0.0",
+        "rfc2047": "2.0.0",
+        "rfc2231": "1.3.0",
+        "underscore": "^1.6.0"
+    }
 }
