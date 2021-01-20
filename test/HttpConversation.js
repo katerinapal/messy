@@ -1,23 +1,22 @@
-/*global describe, it*/
-var expect = require('unexpected'),
-    HttpConversation = require('../lib/HttpConversation'),
-    HttpExchange = require('../lib/HttpExchange'),
-    HttpRequest = require('../lib/HttpRequest'),
-    HttpResponse = require('../lib/HttpResponse');
+import ext_expect from "unexpected";
+import { HttpConversation as HttpConversation_HttpConversation } from "../lib/HttpConversation";
+import { HttpExchange as HttpExchange_HttpExchange } from "../lib/HttpExchange";
+import { HttpRequest as HttpRequest_HttpRequest } from "../lib/HttpRequest";
+import { HttpResponse as HttpResponse_HttpResponse } from "../lib/HttpResponse";
 
 describe('HttpConversation', function () {
     it('should accept an object with an exchanges property containing an array of objects containing an HttpRequest and HttpResponse instances', function () {
-        var httpConversation = new HttpConversation({
+        var httpConversation = new HttpConversation_HttpConversation({
             exchanges: [
                 {
-                    request: new HttpRequest('GET / HTTP/1.1\nFoo: Bar\n\nblah'),
-                    response: new HttpResponse('HTTP/1.1 200 OK\nQuux: Baz\n\nblaf')
+                    request: new HttpRequest_HttpRequest('GET / HTTP/1.1\nFoo: Bar\n\nblah'),
+                    response: new HttpResponse_HttpResponse('HTTP/1.1 200 OK\nQuux: Baz\n\nblaf')
                 }
             ]
         });
 
-        expect(httpConversation.exchanges, 'to have items satisfying', 'to be an', HttpExchange);
-        expect(
+        ext_expect(httpConversation.exchanges, 'to have items satisfying', 'to be an', HttpExchange_HttpExchange);
+        ext_expect(
             httpConversation.toString(),
             'to equal',
             'GET / HTTP/1.1\r\nFoo: Bar\r\n\r\nblah\r\n\r\nHTTP/1.1 200 OK\r\nQuux: Baz\r\n\r\nblaf'
@@ -25,15 +24,15 @@ describe('HttpConversation', function () {
     });
 
     it('should accept an object with an exchanges property containing array of objects containing request and response as strings', function () {
-        var httpConversation = new HttpConversation({
+        var httpConversation = new HttpConversation_HttpConversation({
             exchanges: [
-                new HttpExchange({
+                new HttpExchange_HttpExchange({
                     request: 'GET / HTTP/1.1\nFoo: Bar\n\nblah',
                     response: 'HTTP/1.1 200 OK\nQuux: Baz\n\nblaf'
                 })
             ]
         });
-        expect(
+        ext_expect(
             httpConversation.toString(),
             'to equal',
             'GET / HTTP/1.1\r\nFoo: Bar\r\n\r\nblah\r\n\r\nHTTP/1.1 200 OK\r\nQuux: Baz\r\n\r\nblaf'
@@ -41,7 +40,7 @@ describe('HttpConversation', function () {
     });
 
     it('should accept an object with an exchanges property containing HttpRequest and HttpResponse options objects', function () {
-        var httpConversation = new HttpConversation({
+        var httpConversation = new HttpConversation_HttpConversation({
             exchanges: [
                 {
                     request: {
@@ -63,7 +62,7 @@ describe('HttpConversation', function () {
                 }
             ]
         });
-        expect(
+        ext_expect(
             httpConversation.toString(),
             'to equal',
             'GET / HTTP/1.1\r\nContent-Type: text/html\r\n\r\nThe Body\r\n\r\nHTTP/1.1 404 Not Found\r\nContent-Type: application/json\r\n\r\n{"foo":123}'
@@ -71,7 +70,7 @@ describe('HttpConversation', function () {
     });
 
     it('should consider identical instances equal', function () {
-        var httpConversation1 = new HttpConversation({
+        var httpConversation1 = new HttpConversation_HttpConversation({
             exchanges: [
                 {
                     request: 'GET /foo HTTP/1.1\r\nHost: foo.com\r\n\r\nblah',
@@ -85,7 +84,7 @@ describe('HttpConversation', function () {
                     }
                 }
             ]
-        }), httpConversation2 = new HttpConversation({
+        }), httpConversation2 = new HttpConversation_HttpConversation({
             exchanges: [
                 {
                     request: {
@@ -101,12 +100,12 @@ describe('HttpConversation', function () {
                 }
             ]
         });
-        expect(httpConversation1.equals(httpConversation2), 'to be true');
-        expect(httpConversation1.toString(), 'to equal', httpConversation2.toString());
+        ext_expect(httpConversation1.equals(httpConversation2), 'to be true');
+        ext_expect(httpConversation1.toString(), 'to equal', httpConversation2.toString());
     });
 
     it('should consider different instances unequal', function () {
-        var httpConversation1 = new HttpConversation({
+        var httpConversation1 = new HttpConversation_HttpConversation({
             exchanges: [
                 {
                     request: 'GET /foo HTTP/1.0\r\nHost: foo.com\r\n\r\nblah',
@@ -120,7 +119,7 @@ describe('HttpConversation', function () {
                     }
                 }
             ]
-        }), httpConversation2 = new HttpConversation({
+        }), httpConversation2 = new HttpConversation_HttpConversation({
             exchanges: [
                 {
                     request: {
@@ -132,21 +131,21 @@ describe('HttpConversation', function () {
                 }
             ]
         });
-        expect(httpConversation1.equals(httpConversation2), 'to be false');
-        expect(httpConversation1.toString(), 'not to equal', httpConversation2.toString());
+        ext_expect(httpConversation1.equals(httpConversation2), 'to be false');
+        ext_expect(httpConversation1.toString(), 'not to equal', httpConversation2.toString());
     });
 
     describe('#toJSON', function () {
         it('should return an object with the exchanges JSONified', function () {
-            expect(new HttpConversation({
+            ext_expect(new HttpConversation_HttpConversation({
                 exchanges: [
                     {
-                        request: new HttpRequest('GET / HTTP/1.1\nFoo: Bar\n\nblah'),
-                        response: new HttpResponse('HTTP/1.1 200 OK\nQuux: Baz\n\nblaf')
+                        request: new HttpRequest_HttpRequest('GET / HTTP/1.1\nFoo: Bar\n\nblah'),
+                        response: new HttpResponse_HttpResponse('HTTP/1.1 200 OK\nQuux: Baz\n\nblaf')
                     },
                     {
-                        request: new HttpRequest('GET /foo HTTP/1.1\nFoo: Barrr\n\nblahhh'),
-                        response: new HttpResponse('HTTP/1.1 412 Precondition Failed\nQuux: Bazzz\n\nblafff')
+                        request: new HttpRequest_HttpRequest('GET /foo HTTP/1.1\nFoo: Barrr\n\nblahhh'),
+                        response: new HttpResponse_HttpResponse('HTTP/1.1 412 Precondition Failed\nQuux: Bazzz\n\nblafff')
                     }
                 ]
             }).toJSON(), 'to equal', {

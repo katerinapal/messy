@@ -1,44 +1,43 @@
-/*global describe, it*/
-var expect = require('unexpected'),
-    Mail = require('../lib/Mail');
+import ext_expect from "unexpected";
+import { Mail as Mail_Mail } from "../lib/Mail";
 
 describe('Mail', function () {
     it('should rfc2047 decode the header values', function () {
-        var mail = new Mail('Subject: =?iso-8859-1?Q?=A1?=Hola, se=?iso-8859-1?Q?=F1?=or!');
-        expect(mail.headers.get('subject'), 'to equal', '¡Hola, señor!');
+        var mail = new Mail_Mail('Subject: =?iso-8859-1?Q?=A1?=Hola, se=?iso-8859-1?Q?=F1?=or!');
+        ext_expect(mail.headers.get('subject'), 'to equal', '¡Hola, señor!');
     });
 
     it('should rfc2047 encode when serializing', function () {
-        var mail = new Mail({body: 'bar'});
+        var mail = new Mail_Mail({body: 'bar'});
         mail.headers.set('subject', '¡Hola, señor!');
-        expect(mail.toString(), 'to equal', 'Subject: =?utf-8?Q?=C2=A1Hola=2C?= =?utf-8?Q?_se=C3=B1or!?=\r\n\r\nbar');
+        ext_expect(mail.toString(), 'to equal', 'Subject: =?utf-8?Q?=C2=A1Hola=2C?= =?utf-8?Q?_se=C3=B1or!?=\r\n\r\nbar');
     });
 
     describe('#fileName', function () {
         describe('when invoked as a getter', function () {
             it('should fall back to the name property of the Content-Type header when the Content-Disposition header has no filename parameter', function () {
-                var mail = new Mail(
+                var mail = new Mail_Mail(
                     'Content-Transfer-Encoding: base64\r\n' +
                     'Content-Disposition: attachment\r\n' +
                     'Content-Type: image/png; name="=?iso-8859-1?Q?=E6=F8=E5.png?="'
                 );
-                expect(mail.fileName, 'to equal', 'æøå.png');
+                ext_expect(mail.fileName, 'to equal', 'æøå.png');
             });
 
             it('should fall back to the name property of the Content-Type header when there is no Content-Disposition header', function () {
-                var mail = new Mail(
+                var mail = new Mail_Mail(
                     'Content-Transfer-Encoding: base64\r\n' +
                     'Content-Type: image/png; name="=?iso-8859-1?Q?=E6=F8=E5.png?="'
                 );
-                expect(mail.fileName, 'to equal', 'æøå.png');
+                ext_expect(mail.fileName, 'to equal', 'æøå.png');
             });
         });
 
         describe('when invoked as a setter', function () {
             it('should update the name property of the Content-Type header if available', function () {
-                var mail = new Mail({headers: {'Content-Type': 'image/png'}});
+                var mail = new Mail_Mail({headers: {'Content-Type': 'image/png'}});
                 mail.fileName = 'æøå.png';
-                expect(
+                ext_expect(
                     mail.toString(),
                     'to equal',
                     // TODO: Would be better to emit 'Content-Type: image/png; name="=?iso-8859-1?Q?=E6=F8=E5.png?="\r\n' +
